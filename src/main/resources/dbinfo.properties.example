@@ -1,0 +1,6 @@
+# 복사해서 dbinfo.properties 로 저장한 뒤 비밀번호를 채워 넣으세요. (dbinfo.properties 는 깃에 올라가지 않음)
+db.driver=oracle.jdbc.driver.OracleDriver
+db.url=jdbc:oracle:thin:@dblab.dongduk.ac.kr:1521/orclpdb
+# db.url=jdbc:oracle:thin:@localhost:1521/xepdb1
+db.username=dbp260102
+db.password=
