@@ -17,7 +17,7 @@ CampusMarket 백엔드 레포지토리입니다. (Spring 미사용: Servlet + JD
 | Code Quality   | Spotless (google-java-format, AOSP) + Checkstyle             |
 | Git Convention | Git hooks (`.githooks`: commit-msg, pre-commit)              |
 | Test           | JUnit 5                                                      |
-| IDE            | IntelliJ IDEA                                                |
+| IDE            | Eclipse (Enterprise Java and Web Developers) 또는 IntelliJ IDEA |
 
 <br />
 
@@ -26,8 +26,11 @@ CampusMarket 백엔드 레포지토리입니다. (Spring 미사용: Servlet + JD
 ### 사전 준비
 
 - JDK **21**
-- IntelliJ IDEA (Maven 내장)
+- Apache Tomcat **11**
+- IDE: **Eclipse IDE for Enterprise Java and Web Developers** (실습 환경, Maven 내장) 또는 IntelliJ IDEA
 - 학교 네트워크 또는 VPN (학과 DB 서버 접속용)
+
+> 💡 강의 예제(StudentManagement)와 같은 **Maven 프로젝트**입니다. Maven 은 Eclipse / IntelliJ 에 내장되어 있어 따로 설치하지 않아도 됩니다.
 
 ### 설치 및 실행
 
@@ -49,13 +52,17 @@ git config core.hooksPath .githooks   # 커밋 규칙 훅 설정 (clone 후 1회
 
    > ⚠️ `dbinfo.properties` 는 `.gitignore` 에 등록되어 있습니다. **절대 커밋하지 마세요.**
 
-2. **IntelliJ 로 열기**
-   File → Open → `pom.xml` 선택 → **Open as Project** → 우측 Maven 창에서 🔄 Reload
-   (File → Project Structure → SDK 를 **21** 로 설정)
+2. **IDE 로 열기**
+   - **Eclipse**: File → Import → Maven → **Existing Maven Projects** → clone 한 `DBP_BE` 폴더 선택 → Finish
+     (프로젝트 우클릭 → Maven → **Update Project** 로 의존성 다운로드, 실행은 Servers 창의 Tomcat v11.0 에 Add)
+   - **IntelliJ**: File → Open → `pom.xml` 선택 → **Open as Project** → 우측 Maven 창에서 🔄 Reload
+     (File → Project Structure → SDK 를 **21** 로 설정)
 
 ### 명령어
 
-터미널에 `mvn` 이 없으면 IntelliJ 우측 **Maven 창 → Plugins / Lifecycle** 에서 같은 goal 을 더블클릭해 실행합니다.
+터미널에 `mvn` 이 없으면 IDE 에서 실행합니다.
+- **Eclipse**: 프로젝트 우클릭 → Run As → **Maven build...** → Goals 에 `spotless:apply` 등 입력 → Run
+- **IntelliJ**: 우측 **Maven 창 → Plugins / Lifecycle** 에서 goal 더블클릭
 
 | 명령어                           | 설명                                     |
 | -------------------------------- | ---------------------------------------- |
@@ -66,8 +73,8 @@ git config core.hooksPath .githooks   # 커밋 규칙 훅 설정 (clone 후 1회
 | `mvn test -DexcludedGroups=db`   | DB 연결 없이 가능한 테스트만 실행        |
 | `mvn package`                    | 빌드 (`target/campusmarket.war`)          |
 
-> 💡 IntelliJ 는 `.editorconfig` 를 자동 적용합니다. 저장 시 포맷까지 맞추려면
-> Settings → Plugins 에서 **google-java-format** 설치 후 활성화(스타일 AOSP)하세요.
+> 💡 커밋 전에 `spotless:apply` 를 한 번 실행하면 PR CI 의 포맷 검사에서 걸리지 않습니다.
+> (IntelliJ 는 Settings → Plugins 에서 **google-java-format** 설치 후 활성화(스타일 AOSP)하면 저장 시 자동 적용)
 
 <br />
 
