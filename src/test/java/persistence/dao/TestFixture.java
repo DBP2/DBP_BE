@@ -49,6 +49,11 @@ class TestFixture {
                         + "(SELECT RECORD_ID FROM SAFE_ZONE_RECORD WHERE TRADE_ID = ?)",
                 new Object[] {TRADE_ID});
         execute("DELETE FROM SAFE_ZONE_RECORD WHERE TRADE_ID = ?", new Object[] {TRADE_ID});
+        execute(
+                "DELETE FROM CHAT_MESSAGE WHERE CHAT_ROOM_ID IN "
+                        + "(SELECT CHAT_ROOM_ID FROM CHAT_ROOM WHERE POST_ID = ?)",
+                new Object[] {POST_ID});
+        execute("DELETE FROM CHAT_ROOM WHERE POST_ID = ?", new Object[] {POST_ID});
         execute("DELETE FROM POST_SAFE_ZONE WHERE POST_ID = ?", new Object[] {POST_ID});
         execute("DELETE FROM TRADE WHERE TRADE_ID = ?", new Object[] {TRADE_ID});
         execute("DELETE FROM POST WHERE POST_ID = ?", new Object[] {POST_ID});
