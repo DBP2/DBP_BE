@@ -48,8 +48,7 @@ class ChatRoomDAOTest {
     void getChatRoomByPostAndBuyer() {
         Long chatRoomId = dao.insertChatRoom(newRoom());
 
-        ChatRoom room =
-                dao.getChatRoomByPostAndBuyer(TestFixture.POST_ID, TestFixture.BUYER_ID);
+        ChatRoom room = dao.getChatRoomByPostAndBuyer(TestFixture.POST_ID, TestFixture.BUYER_ID);
 
         assertEquals(chatRoomId, room.getChatRoomId());
         assertNull(dao.getChatRoomByPostAndBuyer(TestFixture.POST_ID, TestFixture.SELLER_ID));

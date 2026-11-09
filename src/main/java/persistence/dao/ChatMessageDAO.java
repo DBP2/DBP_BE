@@ -98,8 +98,7 @@ public class ChatMessageDAO {
     }
 
     public List<ChatMessage> getMessageList(Long chatRoomId) {
-        String searchQuery =
-                query + "WHERE CHAT_ROOM_ID = ? ORDER BY SENT_AT ASC, MESSAGE_ID ASC ";
+        String searchQuery = query + "WHERE CHAT_ROOM_ID = ? ORDER BY SENT_AT ASC, MESSAGE_ID ASC ";
         return getMessageListBy(searchQuery, new Object[] {chatRoomId});
     }
 
