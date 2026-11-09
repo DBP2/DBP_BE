@@ -1,0 +1,18 @@
+#!/bin/sh
+# 커밋되는 Java 파일에 포맷(Spotless) 자동 적용 (FE lint-staged 역할)
+files=$(git diff --cached --name-only --diff-filter=ACM -- '*.java')
+[ -z "$files" ] && exit 0
+
+if command -v mvn >/dev/null 2>&1; then
+  MVN=mvn
+elif command -v mvn.cmd >/dev/null 2>&1; then
+  MVN=mvn.cmd
+else
+  echo "⚠️  mvn 명령을 찾을 수 없어 자동 포맷을 건너뜁니다."
+  echo "   IntelliJ Maven 창에서 Plugins > spotless > spotless:apply 를 실행해주세요. (PR CI 에서 검사됨)"
+  exit 0
+fi
+
+$MVN -q spotless:apply || exit 1
+echo "$files" | xargs git add
+exit 0

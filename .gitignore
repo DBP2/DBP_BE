@@ -1,0 +1,23 @@
+# DB 접속 정보 (비밀번호 포함) - 절대 커밋 금지
+src/main/resources/dbinfo.properties
+
+# Build
+target/
+bin/
+out/
+*.class
+*.war
+
+# IntelliJ
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# OS / logs
+.DS_Store
+Thumbs.db
+*.log
