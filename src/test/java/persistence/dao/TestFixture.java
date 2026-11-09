@@ -52,8 +52,7 @@ class TestFixture {
         execute("DELETE FROM POST_SAFE_ZONE WHERE POST_ID = ?", new Object[] {POST_ID});
         execute("DELETE FROM TRADE WHERE TRADE_ID = ?", new Object[] {TRADE_ID});
         execute("DELETE FROM POST WHERE POST_ID = ?", new Object[] {POST_ID});
-        execute(
-                "DELETE FROM MEMBER WHERE USER_ID IN (?, ?)", new Object[] {SELLER_ID, BUYER_ID});
+        execute("DELETE FROM MEMBER WHERE USER_ID IN (?, ?)", new Object[] {SELLER_ID, BUYER_ID});
         execute(
                 "DELETE FROM SAFE_ZONE WHERE SAFE_ZONE_ID IN (?, ?)",
                 new Object[] {SAFE_ZONE_ID, OTHER_SAFE_ZONE_ID});
