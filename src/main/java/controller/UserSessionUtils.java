@@ -28,8 +28,7 @@ public class UserSessionUtils {
         return loginUser.equals(userId);
     }
 
-    public static String getCurrentUserId(HttpServletRequest request)
-            throws UnauthorizedException {
+    public static String getCurrentUserId(HttpServletRequest request) throws UnauthorizedException {
         HttpSession session = request.getSession(false);
         if (session != null && hasLogined(session)) {
             return getLoginUserId(session);

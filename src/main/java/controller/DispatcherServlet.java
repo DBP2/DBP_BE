@@ -67,8 +67,7 @@ public class DispatcherServlet extends HttpServlet {
                     response.setContentType("application/json;charset=utf-8");
                     response.getWriter().println(jsonString);
                 } else {
-                    response.setStatus(
-                            status != null ? status : HttpServletResponse.SC_NO_CONTENT);
+                    response.setStatus(status != null ? status : HttpServletResponse.SC_NO_CONTENT);
                 }
                 return;
             }
