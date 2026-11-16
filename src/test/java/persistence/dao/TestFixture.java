@@ -37,8 +37,12 @@ class TestFixture {
                     "TEST-QR-900002",
                     "900002"
                 });
-        execute("INSERT INTO MEMBER (USER_ID) VALUES (?)", new Object[] {SELLER_ID});
-        execute("INSERT INTO MEMBER (USER_ID) VALUES (?)", new Object[] {BUYER_ID});
+        execute(
+                "INSERT INTO MEMBER (USER_ID, PASSWORD, NICKNAME) VALUES (?, ?, ?)",
+                new Object[] {SELLER_ID, "test1234", "테스트판매자"});
+        execute(
+                "INSERT INTO MEMBER (USER_ID, PASSWORD, NICKNAME) VALUES (?, ?, ?)",
+                new Object[] {BUYER_ID, "test1234", "테스트구매자"});
         execute("INSERT INTO POST (POST_ID) VALUES (?)", new Object[] {POST_ID});
         execute("INSERT INTO TRADE (TRADE_ID) VALUES (?)", new Object[] {TRADE_ID});
     }
