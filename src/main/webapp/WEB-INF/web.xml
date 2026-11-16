@@ -1,8 +1,62 @@
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
-    					https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+                        https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
     version="6.0">
-	<display-name>CampusMarket</display-name>
-	<description>CampusMarket Backend (Servlet + JDBC, no Spring)</description>
+    <display-name>CampusMarket</display-name>
+    <description>CampusMarket Backend (Servlet + JDBC, no Spring)</description>
+
+    <context-param>
+        <param-name>uploadDir</param-name>
+        <param-value></param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>Encoding Filter</filter-name>
+        <filter-class>filter.EncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <filter>
+        <filter-name>CORS Filter</filter-name>
+        <filter-class>filter.CorsFilter</filter-class>
+        <init-param>
+            <param-name>allowedOrigins</param-name>
+            <param-value>http://localhost:5173,http://127.0.0.1:5173</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>Encoding Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CORS Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>controller.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+        <multipart-config>
+            <max-file-size>10485760</max-file-size>
+            <max-request-size>31457280</max-request-size>
+            <file-size-threshold>0</file-size-threshold>
+        </multipart-config>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>uploadFileServlet</servlet-name>
+        <servlet-class>controller.UploadFileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>uploadFileServlet</servlet-name>
+        <url-pattern>/uploads/*</url-pattern>
+    </servlet-mapping>
 </web-app>
