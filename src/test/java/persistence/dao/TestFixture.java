@@ -10,6 +10,9 @@ class TestFixture {
     static final Long TRADE_ID = 900001L;
     static final String SELLER_ID = "test_seller";
     static final String BUYER_ID = "test_buyer";
+    static final Long SCHOOL_ID = 99001L;
+    static final Long SELLER_STUDENT_ID = 900001L;
+    static final Long BUYER_STUDENT_ID = 900002L;
 
     static void setUp() {
         tearDown();
@@ -38,11 +41,36 @@ class TestFixture {
                     "900002"
                 });
         execute(
-                "INSERT INTO MEMBER (USER_ID, PASSWORD, NICKNAME) VALUES (?, ?, ?)",
-                new Object[] {SELLER_ID, "test1234", "테스트판매자"});
+                "INSERT INTO SCHOOL (SCHOOL_ID, SCHOOL_NAME, EMAIL_DOMAIN) VALUES (?, ?, ?)",
+                new Object[] {SCHOOL_ID, "테스트대학교", "test.campusmarket.ac.kr"});
         execute(
-                "INSERT INTO MEMBER (USER_ID, PASSWORD, NICKNAME) VALUES (?, ?, ?)",
-                new Object[] {BUYER_ID, "test1234", "테스트구매자"});
+                "INSERT INTO STUDENT (STUDENT_ID, SCHOOL_ID, STUDENT_NO, STUDENT_NAME, "
+                        + "DEPARTMENT, EMAIL) VALUES (?, ?, ?, ?, ?, ?)",
+                new Object[] {
+                    SELLER_STUDENT_ID,
+                    SCHOOL_ID,
+                    "T900001",
+                    "테스트판매자",
+                    "테스트학과",
+                    "seller@test.campusmarket.ac.kr"
+                });
+        execute(
+                "INSERT INTO STUDENT (STUDENT_ID, SCHOOL_ID, STUDENT_NO, STUDENT_NAME, "
+                        + "DEPARTMENT, EMAIL) VALUES (?, ?, ?, ?, ?, ?)",
+                new Object[] {
+                    BUYER_STUDENT_ID,
+                    SCHOOL_ID,
+                    "T900002",
+                    "테스트구매자",
+                    "테스트학과",
+                    "buyer@test.campusmarket.ac.kr"
+                });
+        execute(
+                "INSERT INTO MEMBER (USER_ID, PASSWORD, NICKNAME, STUDENT_ID) VALUES (?, ?, ?, ?)",
+                new Object[] {SELLER_ID, "test1234", "테스트판매자", SELLER_STUDENT_ID});
+        execute(
+                "INSERT INTO MEMBER (USER_ID, PASSWORD, NICKNAME, STUDENT_ID) VALUES (?, ?, ?, ?)",
+                new Object[] {BUYER_ID, "test1234", "테스트구매자", BUYER_STUDENT_ID});
         execute("INSERT INTO POST (POST_ID) VALUES (?)", new Object[] {POST_ID});
         execute("INSERT INTO TRADE (TRADE_ID) VALUES (?)", new Object[] {TRADE_ID});
     }
@@ -62,6 +90,10 @@ class TestFixture {
         execute("DELETE FROM TRADE WHERE TRADE_ID = ?", new Object[] {TRADE_ID});
         execute("DELETE FROM POST WHERE POST_ID = ?", new Object[] {POST_ID});
         execute("DELETE FROM MEMBER WHERE USER_ID IN (?, ?)", new Object[] {SELLER_ID, BUYER_ID});
+        execute(
+                "DELETE FROM STUDENT WHERE STUDENT_ID IN (?, ?)",
+                new Object[] {SELLER_STUDENT_ID, BUYER_STUDENT_ID});
+        execute("DELETE FROM SCHOOL WHERE SCHOOL_ID = ?", new Object[] {SCHOOL_ID});
         execute(
                 "DELETE FROM SAFE_ZONE WHERE SAFE_ZONE_ID IN (?, ?)",
                 new Object[] {SAFE_ZONE_ID, OTHER_SAFE_ZONE_ID});
