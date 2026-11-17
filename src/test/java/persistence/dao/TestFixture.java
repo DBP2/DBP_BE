@@ -2,19 +2,19 @@ package persistence.dao;
 
 import persistence.util.JDBCUtil;
 
-class TestFixture {
+public class TestFixture {
 
-    static final Long SAFE_ZONE_ID = 900001L;
-    static final Long OTHER_SAFE_ZONE_ID = 900002L;
-    static final Long POST_ID = 900001L;
-    static final Long TRADE_ID = 900001L;
-    static final String SELLER_ID = "test_seller";
-    static final String BUYER_ID = "test_buyer";
-    static final Long SCHOOL_ID = 99001L;
-    static final Long SELLER_STUDENT_ID = 900001L;
-    static final Long BUYER_STUDENT_ID = 900002L;
+    public static final Long SAFE_ZONE_ID = 900001L;
+    public static final Long OTHER_SAFE_ZONE_ID = 900002L;
+    public static final Long POST_ID = 900001L;
+    public static final Long TRADE_ID = 900001L;
+    public static final String SELLER_ID = "test_seller";
+    public static final String BUYER_ID = "test_buyer";
+    public static final Long SCHOOL_ID = 99001L;
+    public static final Long SELLER_STUDENT_ID = 900001L;
+    public static final Long BUYER_STUDENT_ID = 900002L;
 
-    static void setUp() {
+    public static void setUp() {
         tearDown();
         execute(
                 "INSERT INTO SAFE_ZONE (SAFE_ZONE_ID, ZONE_NAME, LOCATION_DETAIL, OPEN_TIME, "
@@ -75,7 +75,7 @@ class TestFixture {
         execute("INSERT INTO TRADE (TRADE_ID) VALUES (?)", new Object[] {TRADE_ID});
     }
 
-    static void tearDown() {
+    public static void tearDown() {
         execute(
                 "DELETE FROM SAFE_ZONE_RECORD_PHOTO WHERE RECORD_ID IN "
                         + "(SELECT RECORD_ID FROM SAFE_ZONE_RECORD WHERE TRADE_ID = ?)",

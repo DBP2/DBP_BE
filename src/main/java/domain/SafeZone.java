@@ -64,4 +64,11 @@ public class SafeZone {
     public void setManualCode(String manualCode) {
         this.manualCode = manualCode;
     }
+
+    public String getOperatingHours() {
+        if (openTime == null && closeTime == null) {
+            return "24시간";
+        }
+        return openTime + "–" + closeTime;
+    }
 }

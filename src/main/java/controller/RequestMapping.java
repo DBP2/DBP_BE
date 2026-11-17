@@ -1,5 +1,6 @@
 package controller;
 
+import controller.safezone.rest.ListSafeZoneRestController;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ public class RequestMapping {
     private Map<String, Controller> mappings = new HashMap<String, Controller>();
 
     public void initMapping() {
+        mappings.put("/rest/safe-zones", new ListSafeZoneRestController());
+
         logger.info("Initialized Request Mapping!");
     }
 
