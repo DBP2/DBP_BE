@@ -121,6 +121,24 @@ public class ChatRoomDAO {
         return false;
     }
 
+    public String getPostWriterId(Long postId) {
+        String searchQuery = "SELECT WRITER_ID FROM POST WHERE POST_ID = ? ";
+        Object[] param = new Object[] {postId};
+        jdbcUtil.setSqlAndParameters(searchQuery, param);
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery();
+            if (rs.next()) {
+                return rs.getString("WRITER_ID");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            jdbcUtil.close();
+        }
+        return null;
+    }
+
     public List<ChatRoomSummary> getChatRoomSummaryList(String userId) {
         String searchQuery =
                 "SELECT r.CHAT_ROOM_ID, "
