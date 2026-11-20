@@ -124,7 +124,7 @@ public class SafeZoneManager {
     private void checkSafeZone(TradeRecordInfo info, SafeZone safeZone) throws BadRequestException {
         if ("DROP_OFF".equals(getRecordAction(info))) {
             if (safeZoneDAO.isPostSafeZone(info.getPostId(), safeZone.getSafeZoneId()) == false) {
-                throw new BadRequestException("판매자가 고른 Safe Zone이 아니에요");
+                throw new BadRequestException("판매자가 고른 장소가 아니에요");
             }
             return;
         }
@@ -134,7 +134,7 @@ public class SafeZoneManager {
             throw new BadRequestException("아직 물건이 맡겨지지 않았어요");
         }
         if (dropOff.getSafeZoneId().equals(safeZone.getSafeZoneId()) == false) {
-            throw new BadRequestException("물건을 맡긴 Safe Zone이 아니에요");
+            throw new BadRequestException("두고 간 장소에서 가져가야 해요");
         }
     }
 }
