@@ -64,6 +64,8 @@ public class ChatManager {
                 summary.setLastMessage("사진을 보냈어요");
             } else if ("SYSTEM".equals(summary.getLastMessageType())) {
                 summary.setLastMessage("거래 알림이 도착했어요");
+            } else if (summary.getLastMessage() == null) {
+                summary.setLastMessage("");
             }
         }
         return roomList;
