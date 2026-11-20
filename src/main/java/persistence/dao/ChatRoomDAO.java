@@ -159,7 +159,7 @@ public class ChatRoomDAO {
                         + "KEEP (DENSE_RANK LAST ORDER BY c.SENT_AT, c.MESSAGE_ID) "
                         + "FROM CHAT_MESSAGE c WHERE c.CHAT_ROOM_ID = r.CHAT_ROOM_ID) "
                         + "AS LAST_MESSAGE, "
-                        + "r.LAST_MESSAGE_AT, "
+                        + "NVL(r.LAST_MESSAGE_AT, r.CREATED_AT) AS LAST_MESSAGE_AT, "
                         + "(SELECT COUNT(*) FROM CHAT_MESSAGE c "
                         + "WHERE c.CHAT_ROOM_ID = r.CHAT_ROOM_ID AND c.IS_READ = 'N' "
                         + "AND (c.SENDER_ID IS NULL OR c.SENDER_ID <> ?)) AS UNREAD_COUNT "
