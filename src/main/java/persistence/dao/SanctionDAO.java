@@ -2,17 +2,14 @@ package persistence.dao;
 
 import domain.Sanction;
 import domain.User;
-
-import persistence.util.JDBCUtil;
-
-import service.dto.SanctionTarget;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import persistence.util.JDBCUtil;
+import service.dto.SanctionTarget;
 
 /** SANCTION (+ MEMBER 상태 변경). 제재 적용·해제는 두 테이블을 함께 바꾸므로 한 트랜잭션으로 처리 */
 public class SanctionDAO {
@@ -25,8 +22,8 @@ public class SanctionDAO {
 
     private static String query =
             "SELECT s.SANCTION_ID, s.TARGET_ID, m.NICKNAME, s.ADMIN_ID, s.REPORT_ID,"
-                + " s.SANCTION_TYPE, s.REASON, s.START_AT, s.END_AT, s.IS_RELEASED, s.RELEASED_AT"
-                + " FROM SANCTION s JOIN MEMBER m ON s.TARGET_ID = m.USER_ID ";
+                    + " s.SANCTION_TYPE, s.REASON, s.START_AT, s.END_AT, s.IS_RELEASED, s.RELEASED_AT"
+                    + " FROM SANCTION s JOIN MEMBER m ON s.TARGET_ID = m.USER_ID ";
 
     /** 현재 유효한 제재 조건 (해제 안 됐고 기간이 남음) */
     private static String activeCond =
@@ -107,8 +104,8 @@ public class SanctionDAO {
             if (n > 0) {
                 jdbcUtil.setSqlAndParameters(
                         "UPDATE MEMBER m SET MEMBER_STATUS = 'ACTIVE' WHERE m.USER_ID = (SELECT"
-                            + " TARGET_ID FROM SANCTION WHERE SANCTION_ID = ?) AND m.MEMBER_STATUS"
-                            + " IN ('SUSPENDED', 'BANNED') AND "
+                                + " TARGET_ID FROM SANCTION WHERE SANCTION_ID = ?) AND m.MEMBER_STATUS"
+                                + " IN ('SUSPENDED', 'BANNED') AND "
                                 + noRestriction,
                         new Object[] {sanctionId});
                 jdbcUtil.executeUpdate();
@@ -187,10 +184,10 @@ public class SanctionDAO {
         }
         String sql =
                 "SELECT m.USER_ID, m.NICKNAME, m.TRUST_SCORE, m.MEMBER_STATUS, COUNT(DISTINCT"
-                    + " r.REPORT_ID) AS REPORT_COUNT, COUNT(DISTINCT CASE WHEN sr.SANCTION_ID IS"
-                    + " NULL THEN r.REPORT_ID END) AS PENDING_COUNT FROM MEMBER m LEFT JOIN REPORT"
-                    + " r ON r.TARGET_ID = m.USER_ID LEFT JOIN SANCTION sr ON sr.REPORT_ID ="
-                    + " r.REPORT_ID GROUP BY m.USER_ID, m.NICKNAME, m.TRUST_SCORE, m.MEMBER_STATUS "
+                        + " r.REPORT_ID) AS REPORT_COUNT, COUNT(DISTINCT CASE WHEN sr.SANCTION_ID IS"
+                        + " NULL THEN r.REPORT_ID END) AS PENDING_COUNT FROM MEMBER m LEFT JOIN REPORT"
+                        + " r ON r.TARGET_ID = m.USER_ID LEFT JOIN SANCTION sr ON sr.REPORT_ID ="
+                        + " r.REPORT_ID GROUP BY m.USER_ID, m.NICKNAME, m.TRUST_SCORE, m.MEMBER_STATUS "
                         + having
                         + "ORDER BY PENDING_COUNT DESC, REPORT_COUNT DESC, m.USER_ID";
         jdbcUtil.setSqlAndParameters(sql, null);

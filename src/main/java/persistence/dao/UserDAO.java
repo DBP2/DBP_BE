@@ -1,12 +1,10 @@
 package persistence.dao;
 
 import domain.User;
-
-import persistence.util.JDBCUtil;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import persistence.util.JDBCUtil;
 
 /** MEMBER (+ STUDENT · SCHOOL 조인). 회원가입 · 로그인 · 내 프로필 */
 public class UserDAO {
@@ -19,11 +17,11 @@ public class UserDAO {
 
     private static String query =
             "SELECT m.USER_ID, m.PASSWORD, m.NICKNAME, m.PROFILE_IMAGE, m.INTRODUCTION,"
-                + " m.TRUST_SCORE, m.MEMBER_ROLE, m.MEMBER_STATUS, m.CREATED_AT, s.STUDENT_ID,"
-                + " s.STUDENT_NO, s.STUDENT_NAME, s.DEPARTMENT, s.EMAIL, s.ENROLL_STATUS,"
-                + " sc.SCHOOL_ID, sc.SCHOOL_NAME, sc.EMAIL_DOMAIN FROM MEMBER m LEFT JOIN STUDENT s"
-                + " ON m.STUDENT_ID = s.STUDENT_ID LEFT JOIN SCHOOL sc ON s.SCHOOL_ID ="
-                + " sc.SCHOOL_ID ";
+                    + " m.TRUST_SCORE, m.MEMBER_ROLE, m.MEMBER_STATUS, m.CREATED_AT, s.STUDENT_ID,"
+                    + " s.STUDENT_NO, s.STUDENT_NAME, s.DEPARTMENT, s.EMAIL, s.ENROLL_STATUS,"
+                    + " sc.SCHOOL_ID, sc.SCHOOL_NAME, sc.EMAIL_DOMAIN FROM MEMBER m LEFT JOIN STUDENT s"
+                    + " ON m.STUDENT_ID = s.STUDENT_ID LEFT JOIN SCHOOL sc ON s.SCHOOL_ID ="
+                    + " sc.SCHOOL_ID ";
 
     /** 회원 등록 (가입). TRUST_SCORE · MEMBER_STATUS · CREATED_AT 은 DB 기본값 사용 */
     public int create(User user) {

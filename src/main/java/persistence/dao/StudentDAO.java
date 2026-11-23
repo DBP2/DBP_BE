@@ -2,13 +2,11 @@ package persistence.dao;
 
 import domain.School;
 import domain.Student;
-
-import persistence.util.JDBCUtil;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import persistence.util.JDBCUtil;
 
 /** SCHOOL · STUDENT (더미 학교·학적). 회원가입 학적 확인에 함께 쓰여 하나의 DAO 로 관리 */
 public class StudentDAO {
@@ -46,9 +44,9 @@ public class StudentDAO {
     public Student findStudent(Long schoolId, String studentNo) {
         String sql =
                 "SELECT s.STUDENT_ID, s.STUDENT_NO, s.STUDENT_NAME, s.DEPARTMENT, s.EMAIL,"
-                    + " s.ENROLL_STATUS, sc.SCHOOL_ID, sc.SCHOOL_NAME, sc.EMAIL_DOMAIN FROM STUDENT"
-                    + " s JOIN SCHOOL sc ON s.SCHOOL_ID = sc.SCHOOL_ID WHERE s.SCHOOL_ID = ? AND"
-                    + " s.STUDENT_NO = ?";
+                        + " s.ENROLL_STATUS, sc.SCHOOL_ID, sc.SCHOOL_NAME, sc.EMAIL_DOMAIN FROM STUDENT"
+                        + " s JOIN SCHOOL sc ON s.SCHOOL_ID = sc.SCHOOL_ID WHERE s.SCHOOL_ID = ? AND"
+                        + " s.STUDENT_NO = ?";
         jdbcUtil.setSqlAndParameters(sql, new Object[] {schoolId, studentNo});
         try {
             ResultSet rs = jdbcUtil.executeQuery();
