@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import service.SanctionManager;
 import service.exception.MethodNotAllowedException;
 
-/** POST /rest/admin/sanctions/{sanctionId}/release : 제재 해제 (관리자, 204) */
 public class ReleaseSanctionRestController implements Controller {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response)
