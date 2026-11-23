@@ -1,11 +1,21 @@
 package controller;
 
+import controller.admin.rest.ReleaseSanctionRestController;
+import controller.admin.rest.SanctionRestController;
+import controller.admin.rest.SanctionTargetRestController;
+import controller.admin.rest.UserSanctionRestController;
 import controller.chat.rest.ChatMessageRestController;
 import controller.chat.rest.ChatRoomRestController;
 import controller.chat.rest.ReadChatRoomRestController;
 import controller.chat.rest.SendChatImageRestController;
 import controller.chat.rest.ViewChatRoomRestController;
 import controller.safezone.rest.ListSafeZoneRestController;
+import controller.user.rest.ChangePasswordRestController;
+import controller.user.rest.ListSchoolRestController;
+import controller.user.rest.LoginRestController;
+import controller.user.rest.LogoutRestController;
+import controller.user.rest.UserProfileRestController;
+import controller.user.rest.UserRestController;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -23,6 +33,21 @@ public class RequestMapping {
         mappings.put("/rest/chats/{roomId}/messages", new ChatMessageRestController());
         mappings.put("/rest/chats/{roomId}/images", new SendChatImageRestController());
         mappings.put("/rest/chats/{roomId}/read", new ReadChatRoomRestController());
+
+        // 회원가입·로그인·내 프로필
+        mappings.put("/rest/schools", new ListSchoolRestController());
+        mappings.put("/rest/users", new UserRestController());
+        mappings.put("/rest/users/{userId}", new UserProfileRestController()); // users/me 포함
+        mappings.put("/rest/users/me/password", new ChangePasswordRestController());
+        mappings.put("/rest/login", new LoginRestController());
+        mappings.put("/rest/logout", new LogoutRestController());
+
+        // 관리자 제재
+        mappings.put("/rest/admin/sanction-targets", new SanctionTargetRestController());
+        mappings.put("/rest/admin/sanctions", new SanctionRestController());
+        mappings.put(
+                "/rest/admin/sanctions/{sanctionId}/release", new ReleaseSanctionRestController());
+        mappings.put("/rest/admin/users/{userId}/sanctions", new UserSanctionRestController());
 
         logger.info("Initialized Request Mapping!");
     }

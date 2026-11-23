@@ -3,21 +3,21 @@ package persistence.dao;
 import persistence.util.JDBCUtil;
 
 /** 회원·학적·제재 DAO 테스트용 데이터. 실제 예제 데이터와 겹치지 않게 900000번대 ID 와 test_mem_ 아이디를 쓴다. */
-class MemberTestFixture {
+public class MemberTestFixture {
 
-    static final Long SCHOOL_ID = 99001L; // SCHOOL_ID 는 NUMBER(5) 라 99999 이하
-    static final Long STUDENT_ID = 900001L; // USER_ID 와 연결된 학적
-    static final Long LEAVE_STUDENT_ID = 900002L; // 휴학생 (가입 불가 확인용)
-    static final Long REPORTER_STUDENT_ID = 900003L;
-    static final Long FREE_STUDENT_ID = 900004L; // 아직 가입 안 한 학적 (create 테스트용)
-    static final String STUDENT_NO = "T900001";
-    static final String USER_ID = "test_mem_user";
-    static final String ADMIN_ID = "test_mem_admin";
-    static final String REPORTER_ID = "test_mem_reporter";
-    static final String NEW_USER_ID = "test_mem_new";
-    static final Long REPORT_ID = 900001L;
+    public static final Long SCHOOL_ID = 99001L; // SCHOOL_ID 는 NUMBER(5) 라 99999 이하
+    public static final Long STUDENT_ID = 900001L; // USER_ID 와 연결된 학적
+    public static final Long LEAVE_STUDENT_ID = 900002L; // 휴학생 (가입 불가 확인용)
+    public static final Long REPORTER_STUDENT_ID = 900003L;
+    public static final Long FREE_STUDENT_ID = 900004L; // 아직 가입 안 한 학적 (create 테스트용)
+    public static final String STUDENT_NO = "T900001";
+    public static final String USER_ID = "test_mem_user";
+    public static final String ADMIN_ID = "test_mem_admin";
+    public static final String REPORTER_ID = "test_mem_reporter";
+    public static final String NEW_USER_ID = "test_mem_new";
+    public static final Long REPORT_ID = 900001L;
 
-    static void setUp() {
+    public static void setUp() {
         tearDown();
         execute(
                 "INSERT INTO SCHOOL (SCHOOL_ID, SCHOOL_NAME, EMAIL_DOMAIN) VALUES (?, ?, ?)",
@@ -43,7 +43,7 @@ class MemberTestFixture {
                 new Object[] {REPORT_ID, "테스트 신고", USER_ID, REPORTER_ID});
     }
 
-    static void tearDown() {
+    public static void tearDown() {
         String members = "(?, ?, ?, ?)";
         Object[] ids = new Object[] {USER_ID, ADMIN_ID, REPORTER_ID, NEW_USER_ID};
         execute("DELETE FROM SANCTION WHERE TARGET_ID IN " + members, ids);
@@ -56,7 +56,7 @@ class MemberTestFixture {
     }
 
     /** 제재 테스트 사이에 상태를 처음으로 되돌린다 */
-    static void resetSanctions() {
+    public static void resetSanctions() {
         execute("DELETE FROM SANCTION WHERE TARGET_ID = ?", new Object[] {USER_ID});
         execute(
                 "UPDATE MEMBER SET MEMBER_STATUS = 'ACTIVE' WHERE USER_ID = ?",
@@ -72,7 +72,7 @@ class MemberTestFixture {
                 });
     }
 
-    static void execute(String sql, Object[] param) {
+    public static void execute(String sql, Object[] param) {
         JDBCUtil jdbcUtil = new JDBCUtil(sql, param);
         try {
             jdbcUtil.executeUpdate();

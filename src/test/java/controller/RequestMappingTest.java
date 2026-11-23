@@ -39,6 +39,19 @@ class RequestMappingTest {
     }
 
     @Test
+    void findMyInfoAndPasswordController() {
+        RequestMapping rm = new RequestMapping();
+        rm.initMapping();
+
+        assertTrue(
+                rm.findRestController("/rest/users/me").getValue()
+                        instanceof controller.user.rest.UserProfileRestController);
+        assertTrue(
+                rm.findRestController("/rest/users/me/password").getValue()
+                        instanceof controller.user.rest.ChangePasswordRestController);
+    }
+
+    @Test
     void findRestControllerReturnsNullWhenNotMapped() {
         RequestMapping rm = new RequestMapping();
         rm.initMapping();
