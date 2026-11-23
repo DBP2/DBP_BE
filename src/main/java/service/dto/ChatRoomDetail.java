@@ -9,6 +9,7 @@ public class ChatRoomDetail {
     private String partnerName;
     private boolean partnerVerified;
     private int partnerTrustScore;
+    private String partnerTrustGrade;
     private Long postId;
     private String postTitle;
     private int price;
@@ -76,6 +77,14 @@ public class ChatRoomDetail {
 
     public void setPartnerTrustScore(int partnerTrustScore) {
         this.partnerTrustScore = partnerTrustScore;
+    }
+
+    public String getPartnerTrustGrade() {
+        return partnerTrustGrade;
+    }
+
+    public void setPartnerTrustGrade(String partnerTrustGrade) {
+        this.partnerTrustGrade = partnerTrustGrade;
     }
 
     public Long getPostId() {
