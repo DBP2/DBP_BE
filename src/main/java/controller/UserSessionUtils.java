@@ -6,7 +6,6 @@ import service.exception.UnauthorizedException;
 
 public class UserSessionUtils {
     public static final String USER_SESSION_KEY = "userId";
-    public static final String USER_ID_HEADER = "X-User-Id";
 
     public static String getLoginUserId(HttpSession session) {
         String userId = (String) session.getAttribute(USER_SESSION_KEY);
@@ -32,11 +31,6 @@ public class UserSessionUtils {
         HttpSession session = request.getSession(false);
         if (session != null && hasLogined(session)) {
             return getLoginUserId(session);
-        }
-
-        String headerUserId = request.getHeader(USER_ID_HEADER);
-        if (headerUserId != null && !headerUserId.isBlank()) {
-            return headerUserId;
         }
         throw new UnauthorizedException("로그인이 필요해요");
     }

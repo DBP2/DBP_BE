@@ -38,7 +38,7 @@ public class CorsFilter implements Filter {
             res.setHeader("Access-Control-Allow-Origin", origin);
             res.setHeader("Access-Control-Allow-Credentials", "true");
             res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
-            res.setHeader("Access-Control-Allow-Headers", "Content-Type, X-User-Id");
+            res.setHeader("Access-Control-Allow-Headers", "Content-Type");
             res.setHeader("Vary", "Origin");
         }
 
