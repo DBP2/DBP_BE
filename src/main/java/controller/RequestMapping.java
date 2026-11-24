@@ -9,7 +9,11 @@ import controller.chat.rest.ChatRoomRestController;
 import controller.chat.rest.ReadChatRoomRestController;
 import controller.chat.rest.SendChatImageRestController;
 import controller.chat.rest.ViewChatRoomRestController;
+import controller.safezone.rest.CreateTradeRecordRestController;
 import controller.safezone.rest.ListSafeZoneRestController;
+import controller.safezone.rest.VerifySafeZoneRestController;
+import controller.safezone.rest.ViewMyTradeRecordRestController;
+import controller.safezone.rest.ViewTradeRecordInfoRestController;
 import controller.user.rest.ChangePasswordRestController;
 import controller.user.rest.ListSchoolRestController;
 import controller.user.rest.LoginRestController;
@@ -28,6 +32,10 @@ public class RequestMapping {
 
     public void initMapping() {
         mappings.put("/rest/safe-zones", new ListSafeZoneRestController());
+        mappings.put("/rest/trades/{tradeId}/safe-zone/verify", new VerifySafeZoneRestController());
+        mappings.put("/rest/trades/{tradeId}/record-info", new ViewTradeRecordInfoRestController());
+        mappings.put("/rest/trades/{tradeId}/records/me", new ViewMyTradeRecordRestController());
+        mappings.put("/rest/trades/{tradeId}/records", new CreateTradeRecordRestController());
         mappings.put("/rest/chats", new ChatRoomRestController());
         mappings.put("/rest/chats/{roomId}", new ViewChatRoomRestController());
         mappings.put("/rest/chats/{roomId}/messages", new ChatMessageRestController());

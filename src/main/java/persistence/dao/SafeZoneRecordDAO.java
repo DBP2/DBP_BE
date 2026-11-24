@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import persistence.util.JDBCUtil;
+import service.dto.TradeRecordInfo;
 
 public class SafeZoneRecordDAO {
 
@@ -126,6 +127,50 @@ public class SafeZoneRecordDAO {
                 record.setPhotoUrls(getPhotoUrls(record.getRecordId()));
             }
             return list;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            jdbcUtil.close();
+        }
+        return null;
+    }
+
+    public TradeRecordInfo getTradeRecordInfo(Long tradeId, String userId) {
+        String searchQuery =
+                "SELECT t.TRADE_ID, "
+                        + "r.CHAT_ROOM_ID, "
+                        + "p.POST_ID, "
+                        + "p.TITLE AS POST_TITLE, "
+                        + "p.PRICE, "
+                        + "t.STATUS AS TRADE_STATUS, "
+                        + "t.BUYER_ID, "
+                        + "t.SELLER_ID, "
+                        + "CASE WHEN t.SELLER_ID = ? THEN 'SELLER' "
+                        + "WHEN t.BUYER_ID = ? THEN 'BUYER' END AS MY_ROLE "
+                        + "FROM TRADE t "
+                        + "JOIN POST p ON t.POST_ID = p.POST_ID "
+                        + "LEFT JOIN CHAT_ROOM r ON r.TRADE_ID = t.TRADE_ID "
+                        + "WHERE t.TRADE_ID = ? ";
+        Object[] param = new Object[] {userId, userId, tradeId};
+        jdbcUtil.setSqlAndParameters(searchQuery, param);
+
+        try {
+            ResultSet rs = jdbcUtil.executeQuery();
+            TradeRecordInfo info = null;
+            if (rs.next()) {
+                info = new TradeRecordInfo();
+                info.setTradeId(rs.getLong("TRADE_ID"));
+                long chatRoomId = rs.getLong("CHAT_ROOM_ID");
+                info.setChatRoomId(rs.wasNull() ? null : chatRoomId);
+                info.setPostId(rs.getLong("POST_ID"));
+                info.setPostTitle(rs.getString("POST_TITLE"));
+                info.setPrice(rs.getInt("PRICE"));
+                info.setTradeStatus(rs.getString("TRADE_STATUS"));
+                info.setBuyerId(rs.getString("BUYER_ID"));
+                info.setSellerId(rs.getString("SELLER_ID"));
+                info.setMyRole(rs.getString("MY_ROLE"));
+            }
+            return info;
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
