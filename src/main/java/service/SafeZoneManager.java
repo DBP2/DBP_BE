@@ -120,6 +120,10 @@ public class SafeZoneManager {
         return recordDAO.getRecord(recordId);
     }
 
+    public boolean isPickedUp(Long tradeId) throws SQLException {
+        return recordDAO.getRecordByTradeAndAction(tradeId, "PICK_UP") != null;
+    }
+
     public boolean isAcceptedTrade(TradeRecordInfo info) {
         return "ACCEPTED".equals(info.getTradeStatus());
     }

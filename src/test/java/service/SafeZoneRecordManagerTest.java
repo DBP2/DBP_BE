@@ -52,6 +52,11 @@ class SafeZoneRecordManagerTest {
     }
 
     @Test
+    void isPickedUpWithoutRecord() throws Exception {
+        assertFalse(SafeZoneManager.getInstance().isPickedUp(TestFixture.TRADE_ID));
+    }
+
+    @Test
     void findMissingTrade() {
         assertThrows(
                 NotFoundException.class,
