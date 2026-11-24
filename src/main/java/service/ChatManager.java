@@ -2,6 +2,7 @@ package service;
 
 import domain.ChatMessage;
 import domain.ChatRoom;
+import domain.User;
 import java.sql.SQLException;
 import java.util.List;
 import persistence.dao.ChatMessageDAO;
@@ -153,16 +154,9 @@ public class ChatManager {
     }
 
     public String getTrustGrade(int trustScore) {
-        if (trustScore >= 80) {
-            return "A";
-        }
-        if (trustScore >= 50) {
-            return "B";
-        }
-        if (trustScore > 0) {
-            return "C";
-        }
-        return null;
+        User user = new User();
+        user.setTrustScore(trustScore);
+        return user.getTrustGrade();
     }
 
     private ChatMessage createMessage(ChatMessage message) throws SQLException {
