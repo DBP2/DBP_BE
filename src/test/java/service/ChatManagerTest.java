@@ -1,7 +1,6 @@
 package service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.AfterAll;
@@ -29,10 +28,10 @@ class ChatManagerTest {
     void getTrustGrade() {
         ChatManager chatMan = ChatManager.getInstance();
 
-        assertEquals("A", chatMan.getTrustGrade(80));
-        assertEquals("B", chatMan.getTrustGrade(50));
-        assertEquals("C", chatMan.getTrustGrade(1));
-        assertNull(chatMan.getTrustGrade(0));
+        assertEquals("A", chatMan.getTrustGrade(30));
+        assertEquals("B", chatMan.getTrustGrade(10));
+        assertEquals("C", chatMan.getTrustGrade(0));
+        assertEquals("D", chatMan.getTrustGrade(-1));
     }
 
     @Test
