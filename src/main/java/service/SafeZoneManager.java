@@ -51,6 +51,9 @@ public class SafeZoneManager {
     public SafeZone verifySafeZone(Long tradeId, String userId, String type, String value)
             throws SQLException, NotFoundException, ForbiddenException, BadRequestException {
         TradeRecordInfo info = findTradeRecordInfo(tradeId, userId);
+        if (isAcceptedTrade(info) == false) {
+            throw new BadRequestException("수락된 거래만 기록할 수 있어요");
+        }
 
         SafeZone safeZone = null;
         if ("QR".equals(type)) {
@@ -82,6 +85,9 @@ public class SafeZoneManager {
                     BadRequestException,
                     ConflictException {
         TradeRecordInfo info = findTradeRecordInfo(record.getTradeId(), record.getRecorderId());
+        if (isAcceptedTrade(info) == false) {
+            throw new BadRequestException("수락된 거래만 기록할 수 있어요");
+        }
 
         if (getRecordAction(info).equals(record.getRecordAction()) == false) {
             throw new BadRequestException("할 수 없는 기록이에요");
@@ -112,6 +118,10 @@ public class SafeZoneManager {
                 .addSystemMessage(
                         record.getTradeId(), "SAFE_ZONE_RECORDED", safeZone.getZoneName());
         return recordDAO.getRecord(recordId);
+    }
+
+    public boolean isAcceptedTrade(TradeRecordInfo info) {
+        return "ACCEPTED".equals(info.getTradeStatus());
     }
 
     public String getRecordAction(TradeRecordInfo info) {
