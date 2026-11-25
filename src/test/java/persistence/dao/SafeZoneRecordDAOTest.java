@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import domain.ChatMessage;
+import domain.ChatRoom;
 import domain.SafeZoneRecord;
 import java.util.List;
 import org.junit.jupiter.api.AfterAll;
@@ -60,6 +62,44 @@ class SafeZoneRecordDAOTest {
                 List.of("/upload/test/drop-1.jpg", "/upload/test/drop-2.jpg"),
                 saved.getPhotoUrls());
         assertNotNull(saved.getRecordedAt());
+    }
+
+    private ChatMessage recordMessage(Long chatRoomId) {
+        ChatMessage message = new ChatMessage();
+        message.setChatRoomId(chatRoomId);
+        message.setMessageType("SYSTEM");
+        message.setSystemType("SAFE_ZONE_RECORDED");
+        message.setPlaceName("테스트 Safe Zone");
+        return message;
+    }
+
+    @Test
+    void insertRecordWithMessage() {
+        ChatRoom room = new ChatRoom();
+        room.setPostId(TestFixture.POST_ID);
+        room.setBuyerId(TestFixture.BUYER_ID);
+        Long chatRoomId = new ChatRoomDAO().insertChatRoom(room);
+
+        Long recordId =
+                dao.insertRecordWithMessage(
+                        newRecord(TestFixture.SELLER_ID, "DROP_OFF", List.of("/a.jpg")),
+                        recordMessage(chatRoomId));
+
+        assertNotNull(recordId);
+        List<ChatMessage> messages = new ChatMessageDAO().getMessageList(chatRoomId);
+        assertEquals(1, messages.size());
+        assertEquals("SAFE_ZONE_RECORDED", messages.get(0).getSystemType());
+    }
+
+    @Test
+    void insertRecordWithMessageRollback() {
+        Long recordId =
+                dao.insertRecordWithMessage(
+                        newRecord(TestFixture.SELLER_ID, "DROP_OFF", List.of("/a.jpg")),
+                        recordMessage(-1L));
+
+        assertNull(recordId);
+        assertNull(dao.getRecordByTradeAndRecorder(TestFixture.TRADE_ID, TestFixture.SELLER_ID));
     }
 
     @Test

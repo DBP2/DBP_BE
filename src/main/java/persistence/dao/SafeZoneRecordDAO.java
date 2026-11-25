@@ -1,7 +1,10 @@
 package persistence.dao;
 
+import domain.ChatMessage;
 import domain.SafeZone;
 import domain.SafeZoneRecord;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -83,6 +86,112 @@ public class SafeZoneRecordDAO {
             ex.printStackTrace();
         } finally {
             jdbcUtil.close();
+        }
+        return null;
+    }
+
+    public Long insertRecordWithMessage(SafeZoneRecord record, ChatMessage message) {
+        Connection conn = null;
+        PreparedStatement pStmt = null;
+        Long recordId = null;
+        try {
+            conn = jdbcUtil.getConnection();
+            conn.setAutoCommit(false);
+
+            String sql1 = "SELECT SEQ_SAFE_ZONE_RECORD.NEXTVAL FROM DUAL";
+            pStmt = conn.prepareStatement(sql1);
+            ResultSet rs = pStmt.executeQuery();
+            if (rs.next()) {
+                recordId = rs.getLong(1);
+            }
+            rs.close();
+            pStmt.close();
+
+            String sql2 =
+                    "INSERT INTO SAFE_ZONE_RECORD "
+                            + "(RECORD_ID, TRADE_ID, RECORDER_ID, SAFE_ZONE_ID, RECORD_ACTION) "
+                            + "VALUES (?, ?, ?, ?, ?)";
+            pStmt = conn.prepareStatement(sql2);
+            pStmt.setLong(1, recordId);
+            pStmt.setLong(2, record.getTradeId());
+            pStmt.setString(3, record.getRecorderId());
+            pStmt.setLong(4, record.getSafeZoneId());
+            pStmt.setString(5, record.getRecordAction());
+            if (pStmt.executeUpdate() != 1) {
+                throw new RecordException();
+            }
+            pStmt.close();
+
+            String sql3 =
+                    "INSERT INTO SAFE_ZONE_RECORD_PHOTO "
+                            + "(PHOTO_ID, RECORD_ID, IMAGE_URL, PHOTO_ORDER) "
+                            + "VALUES (SEQ_SAFE_ZONE_RECORD_PHOTO.NEXTVAL, ?, ?, ?)";
+            pStmt = conn.prepareStatement(sql3);
+            List<String> photoUrls = record.getPhotoUrls();
+            for (int i = 0; i < photoUrls.size(); i++) {
+                pStmt.setLong(1, recordId);
+                pStmt.setString(2, photoUrls.get(i));
+                pStmt.setInt(3, i + 1);
+                if (pStmt.executeUpdate() != 1) {
+                    throw new RecordException();
+                }
+            }
+            pStmt.close();
+
+            String sql4 =
+                    "INSERT INTO CHAT_MESSAGE "
+                            + "(MESSAGE_ID, CHAT_ROOM_ID, MESSAGE_TYPE, SYSTEM_TYPE, PLACE_NAME) "
+                            + "VALUES (SEQ_CHAT_MESSAGE.NEXTVAL, ?, ?, ?, ?)";
+            pStmt = conn.prepareStatement(sql4);
+            pStmt.setLong(1, message.getChatRoomId());
+            pStmt.setString(2, message.getMessageType());
+            pStmt.setString(3, message.getSystemType());
+            pStmt.setString(4, message.getPlaceName());
+            if (pStmt.executeUpdate() != 1) {
+                throw new RecordException();
+            }
+            pStmt.close();
+
+            String sql5 = "UPDATE CHAT_ROOM SET LAST_MESSAGE_AT = SYSDATE WHERE CHAT_ROOM_ID = ?";
+            pStmt = conn.prepareStatement(sql5);
+            pStmt.setLong(1, message.getChatRoomId());
+            if (pStmt.executeUpdate() != 1) {
+                throw new RecordException();
+            }
+            conn.commit();
+            record.setRecordId(recordId);
+            return recordId;
+        } catch (Exception ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.setAutoCommit(true);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            if (pStmt != null) {
+                try {
+                    pStmt.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
         return null;
     }
