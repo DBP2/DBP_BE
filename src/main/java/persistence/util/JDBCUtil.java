@@ -200,6 +200,10 @@ public class JDBCUtil {
         }
     }
 
+    public Connection getConnection() throws SQLException {
+        return ds.getConnection();
+    }
+
     public void commit() {
         try {
             conn.commit();

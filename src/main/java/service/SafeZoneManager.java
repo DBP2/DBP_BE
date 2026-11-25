@@ -1,5 +1,6 @@
 package service;
 
+import domain.ChatMessage;
 import domain.SafeZone;
 import domain.SafeZoneRecord;
 import java.sql.SQLException;
@@ -109,14 +110,20 @@ public class SafeZoneManager {
             throw new ConflictException("이미 기록을 저장했어요");
         }
 
-        Long recordId = recordDAO.insertRecord(record);
+        if (info.getChatRoomId() == null) {
+            throw new NotFoundException("거래 채팅방을 찾을 수 없어요");
+        }
+
+        ChatMessage message = new ChatMessage();
+        message.setChatRoomId(info.getChatRoomId());
+        message.setMessageType("SYSTEM");
+        message.setSystemType("SAFE_ZONE_RECORDED");
+        message.setPlaceName(safeZone.getZoneName());
+
+        Long recordId = recordDAO.insertRecordWithMessage(record, message);
         if (recordId == null) {
             throw new SQLException("기록을 저장하지 못했어요");
         }
-
-        ChatManager.getInstance()
-                .addSystemMessage(
-                        record.getTradeId(), "SAFE_ZONE_RECORDED", safeZone.getZoneName());
         return recordDAO.getRecord(recordId);
     }
 
