@@ -2,7 +2,7 @@ package persistence.dao;
 
 import persistence.util.JDBCUtil;
 
-public class    TestFixture {
+public class TestFixture {
 
     public static final Long SAFE_ZONE_ID = 900001L;
     public static final Long OTHER_SAFE_ZONE_ID = 900002L;
