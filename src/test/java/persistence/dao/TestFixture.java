@@ -2,7 +2,7 @@ package persistence.dao;
 
 import persistence.util.JDBCUtil;
 
-public class TestFixture {
+public class    TestFixture {
 
     public static final Long SAFE_ZONE_ID = 900001L;
     public static final Long OTHER_SAFE_ZONE_ID = 900002L;
@@ -71,8 +71,13 @@ public class TestFixture {
         execute(
                 "INSERT INTO MEMBER (USER_ID, PASSWORD, NICKNAME, STUDENT_ID) VALUES (?, ?, ?, ?)",
                 new Object[] {BUYER_ID, "test1234", "테스트구매자", BUYER_STUDENT_ID});
-        execute("INSERT INTO POST (POST_ID) VALUES (?)", new Object[] {POST_ID});
-        execute("INSERT INTO TRADE (TRADE_ID) VALUES (?)", new Object[] {TRADE_ID});
+        execute(
+                "INSERT INTO POST (POST_ID, WRITER_ID, TITLE, PRICE) VALUES (?, ?, ?, ?)",
+                new Object[] {POST_ID, SELLER_ID, "테스트 게시글", 10000});
+        execute(
+                "INSERT INTO TRADE (TRADE_ID, POST_ID, BUYER_ID, SELLER_ID, STATUS) "
+                        + "VALUES (?, ?, ?, ?, ?)",
+                new Object[] {TRADE_ID, POST_ID, BUYER_ID, SELLER_ID, "ACCEPTED"});
     }
 
     public static void tearDown() {
